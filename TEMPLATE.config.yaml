@@ -1,0 +1,6 @@
+database:
+  user: <USERNAME> # default to postgres
+  password: <PASSWORD> # default to ""
+  db: <DATABASENAME> # default to test
+  host: <HOSTNAME> # default to localhost
+  port: <PORTNAME> # default to 5432

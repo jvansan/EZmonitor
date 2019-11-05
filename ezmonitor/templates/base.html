@@ -1,0 +1,30 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>{% block title %}EZmonitor{% end %}</title>
+  <meta name="description" content="EZmointor app">
+  <meta name="author" content="jvansan">
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet"> 
+  <link rel="stylesheet" type="text/css" href="static/css/base.css">
+</head>
+
+<body>
+  <div id="header">
+    {% block header %} {% module Header(logged_in=False) %} {% end %}
+  </div>
+
+  <div id="content">
+    {% block content %}{% end %}
+  </div>
+
+  <div id="footer">
+    {% block footer %} {% module Footer() %} {% end %}
+  </div>
+
+  </body>
+</html>
+

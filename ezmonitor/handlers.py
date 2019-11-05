@@ -28,4 +28,9 @@ class ExampleHandler(BaseHandler):
         res = await self.conn.fetch("SELECT 1")
         self.log("TEST")
         self.log("ERROR", level="ERROR")
-        self.write(f"{res}, Hello, world\n")
+        self.write(f"{res[0][0]}, Hello, world\n")
+
+
+class HomeHandler(BaseHandler):
+    def get(self):
+        self.render("home.html")

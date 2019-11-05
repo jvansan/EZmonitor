@@ -7,7 +7,9 @@ CREATE TABLE IF NOT EXISTS website(
     id SERIAL PRIMARY KEY,
     name TEXT,
     url TEXT,
-    port INT
+    port INT,
+    lastchecked TIMESTAMP,
+    running BOOLEAN
 )
 """,
 """
@@ -30,6 +32,6 @@ async def create_pool(user: str = "postgres", password: str = "",
     return pool
 
 
-async def setup(conn: asyncpg.Connection) -> None:
+async def setup_tables(conn: asyncpg.Connection) -> None:
     for sql in TABLE_DEFS:
         await conn.execute(sql)

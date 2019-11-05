@@ -21,6 +21,14 @@ database:
   port: <PORTNAME> # default to 5432
 ```
 
+### Deployment 
+
+*Docker*?
+
+1) Compile SCSS `scss --compass ezmonitor/static/scss:ezmonitor/static/css`
+
+2) Python stuff...
+
 
 #### SQL Definitions
 

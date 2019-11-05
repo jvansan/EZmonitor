@@ -6,7 +6,7 @@ from tornado.log import enable_pretty_logging
 import tornado.platform.asyncio
 
 from ezmonitor.app import create_app
-from ezmonitor.handlers import ExampleHandler
+from ezmonitor.handlers import HomeHandler
 
 # class MainHandler(tornado.web.RequestHandler):
 #     def get(self):
@@ -14,8 +14,12 @@ from ezmonitor.handlers import ExampleHandler
 
 def start_server():
     app = create_app([
-        (r"/", ExampleHandler)
-    ], debug=True)
+        (r"/", HomeHandler)
+        ], 
+        debug=True,
+        template_path='ezmonitor/templates',
+        static_path='ezmonitor/static'
+    )
     app.run()
 
 if __name__ == "__main__":

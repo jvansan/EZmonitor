@@ -1,0 +1,12 @@
+@import "colors";
+
+#footer {
+    background: $color3;
+    height: 5em;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+#footer p {
+    color: $color4;
+}

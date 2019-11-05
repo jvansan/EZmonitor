@@ -1,0 +1,17 @@
+<html>
+  <div >
+    <ul class="navigation">
+      <li class="title"><h1>EZmonitor</h1></li>
+      <li class="spacer"></li>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Settings</a></li>
+      <li>
+        {% if logged_in %}
+          <a href="#">Logout</a>
+        {% else %}
+          <a href="#">Login</a>
+        {% end %}
+      </li>
+    </ul>
+  </div>
+</html>

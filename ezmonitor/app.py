@@ -5,7 +5,7 @@ import tornado.ioloop
 
 from ezmonitor import uimodules
 from ezmonitor.utils import load_config
-from ezmonitor.db import create_pool, setup_tables
+from ezmonitor import db 
 
 log = logging.getLogger('tornado.application')
 
@@ -27,9 +27,19 @@ class Application(tornado.web.Application):
         log.debug(self.config)
 
     async def _init(self):
-        self.db_pool = await create_pool(**self.config.get("database", {}))
+        self.db_pool = await db.create_pool(**self.config.get("database", {}))
         async with self.db_pool.acquire() as conn:
-            await setup_tables(conn)
+            # Setup DB
+            await db.setup_tables(conn)
+            # Add configurated servers
+            for server in self.config.get("servers", []):
+                if not await db.server_exists(conn, server.get("name")):
+                    await db.add_server(
+                        conn,
+                        server.get("name"),
+                        server.get("url"),
+                        server.get("port")
+                    )
 
     def run(self, port=8888):
         self.listen(port)

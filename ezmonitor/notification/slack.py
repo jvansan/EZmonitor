@@ -1,5 +1,11 @@
 import slack
-from ezmonitor.utils import first
+
+
+def get_config(config: dict) -> dict:
+    """Take app config and return Slack config"""
+    notification_config = config.get("notification", {})
+    return notification_config.get("slack", {}) or {}
+
 
 def check_config(config: dict) -> bool:
     """Check the application config for Slack App credentials
@@ -8,15 +14,6 @@ def check_config(config: dict) -> bool:
     """
     slack_config = get_config(config)
     return bool(slack_config.get("token")) and bool(slack_config.get("channel"))
-
-
-def get_config(config: dict) -> dict:
-    """Take app config and return Slack config"""
-    notification_config = config.get("notification", [])
-    try:
-        return first(notification_config, lambda x: x.get("slack")).get("slack")
-    except StopIteration:
-        return {}
 
 
 def connect_slack(config: dict) -> slack.WebClient:

@@ -1,5 +1,11 @@
-import yaml
+import datetime
+import json
 from pathlib import Path
+from typing import Union
+
+import yaml
+
+from ezmonitor.db import Website, WebsiteList
 
 __default_confg = Path("config.yaml")
 
@@ -12,24 +18,20 @@ def load_config(path: Path = __default_confg) -> dict:
     finally:
         return config
 
-def first(iterable, condition = lambda x: True):
-    """
-    Returns the first item in the `iterable` that
-    satisfies the `condition`.
 
-    If the condition is not given, returns the first item of
-    the iterable.
+def json_encoder(res: Union[Website, WebsiteList], indent: int=None) -> str:
+    if not res:
+        return json.dumps(res, indent=indent)
+    if isinstance(res, list):
+        result = [r._asdict() for r in res]
+        for rs in result:
+            rs['results'] = [r._asdict() for r in rs['results']]
+    else:
+        result = res._asdict()
+        result['results'] = [r._asdict() for r in result['results']]
+    return json.dumps(result, indent=indent, default=json_converter)
 
-    Raises `StopIteration` if no item satysfing the condition is found.
 
-    >>> first( (1,2,3), condition=lambda x: x % 2 == 0)
-    2
-    >>> first(range(3, 100))
-    3
-    >>> first( () )
-    Traceback (most recent call last):
-    ...
-    StopIteration
-    """
-
-    return next(x for x in iterable if condition(x))
+def json_converter(o):
+    if isinstance(o, datetime.datetime):
+        return o.__str__()

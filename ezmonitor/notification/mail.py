@@ -1,5 +1,4 @@
 import aiosmtplib
-from ezmonitor.utils import first
 
 EMAIL_TEMPLATE = """\
 From: {sender}
@@ -11,11 +10,8 @@ Subject: {subject}
 
 def get_config(config: dict) -> dict:
     """Take app config and return Email config"""
-    notification_config = config.get("notification", [])
-    try:
-        return first(notification_config, lambda x: x.get("email")).get("email")
-    except StopIteration:
-        return {}
+    notification_config = config.get("notification", {})
+    return notification_config.get("email", {}) or {}
 
 
 def check_config(config: dict) -> bool:

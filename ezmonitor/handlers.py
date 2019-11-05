@@ -1,6 +1,10 @@
+import json
 import logging
 from tornado.web import RequestHandler
 import tornado.ioloop
+
+from ezmonitor import db
+from ezmonitor.utils import json_encoder
 
 
 class BaseHandler(RequestHandler):
@@ -34,3 +38,17 @@ class ExampleHandler(BaseHandler):
 class HomeHandler(BaseHandler):
     def get(self):
         self.render("home.html")
+
+
+class WebsiteHandler(BaseHandler):
+    async def get(self, name):
+        # self.log(f"GET name {name}", "DEBUG")
+        res = await db.get_one_status(self.conn, name)
+        self.write(json_encoder(res, indent=2))
+
+
+class WebsitesHandler(BaseHandler):
+    async def get(self):
+        # self.log(f"GET name {name}", "DEBUG")
+        res = await db.get_all_status(self.conn)
+        self.write(json_encoder(res, indent=2))

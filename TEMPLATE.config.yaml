@@ -5,10 +5,18 @@ database:
   host: <HOSTNAME> # default to localhost
   port: <PORTNAME> # default to 5432
 notification:
-  - slack:
-      token: <API-TOKEN>
-      channel: <SLACK-CHANNEL>
-  - email:
-      sender: <EMAIL-ADDRESS>
-      sender_password: <EMAIL-PASSWORD>
-      receiver: <EMAIL-ADDRESS>
+  slack:
+    token: <API-TOKEN>
+    channel: <SLACK-CHANNEL>
+  email: 
+    sender: <EMAIL>
+    sender_password: <PASSWORD>
+    receiver: <EMAIL>
+servers:
+  -   name: sample
+      url: "www.example.com"
+      port: 443
+      jobs: # These are (to be) the three options
+        - check_alive
+        - check_ssl
+        - check_backup

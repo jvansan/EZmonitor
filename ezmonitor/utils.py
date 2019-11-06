@@ -1,5 +1,7 @@
 import datetime
 import json
+import logging
+from dataclasses import asdict
 from pathlib import Path
 from typing import Union
 
@@ -8,6 +10,8 @@ import yaml
 from ezmonitor.db import Website, WebsiteList
 
 __default_confg = Path("config.yaml")
+log = logging.getLogger('tornado.application')
+
 
 def load_config(path: Path = __default_confg) -> dict:
     try:
@@ -20,18 +24,19 @@ def load_config(path: Path = __default_confg) -> dict:
 
 
 def json_encoder(res: Union[Website, WebsiteList], indent: int=None) -> str:
+    log.debug(res)
     if not res:
         return json.dumps(res, indent=indent)
     if isinstance(res, list):
-        result = [r._asdict() for r in res]
-        for rs in result:
-            rs['results'] = [r._asdict() for r in rs['results']]
+        result = [asdict(r) for r in res]
     else:
-        result = res._asdict()
-        result['results'] = [r._asdict() for r in result['results']]
+        result = asdict(res)
     return json.dumps(result, indent=indent, default=json_converter)
 
 
 def json_converter(o):
     if isinstance(o, datetime.datetime):
         return o.__str__()
+
+def datetime_in_n_seconds(n: int) -> datetime.datetime:
+    return datetime.datetime.now()+datetime.timedelta(seconds=n)

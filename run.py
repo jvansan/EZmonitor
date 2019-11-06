@@ -1,12 +1,14 @@
 import asyncio
 import logging
-import tornado.web
+
 import tornado.ioloop
-from tornado.log import enable_pretty_logging
 import tornado.platform.asyncio
+import tornado.web
+from tornado.log import enable_pretty_logging
 
 from ezmonitor.app import create_app
-from ezmonitor.handlers import HomeHandler, WebsiteHandler, WebsitesHandler
+from ezmonitor.handlers import (HomeHandler, LoginHandler, LogoutHandler,
+                                WebsiteHandler, WebsitesHandler)
 
 # class MainHandler(tornado.web.RequestHandler):
 #     def get(self):
@@ -14,13 +16,17 @@ from ezmonitor.handlers import HomeHandler, WebsiteHandler, WebsitesHandler
 
 def start_server():
     app = create_app([
-        (r"/", HomeHandler),
-        (r"/api/website/(\w*[-]*\w*)", WebsiteHandler),
-        (r"/api/websites", WebsitesHandler),
+            (r"/", HomeHandler),
+            (r"/login", LoginHandler),
+            (r"/logout", LogoutHandler),
+            (r"/api/website/(\w*[-]*\w*)", WebsiteHandler),
+            (r"/api/websites", WebsitesHandler),
         ], 
         debug=True,
         template_path='ezmonitor/templates',
-        static_path='ezmonitor/static'
+        static_path='ezmonitor/static',
+        login_url="/login",
+        cookie_secret="__TODO:_GENERATE_YOUR_OWN_RANDOM_VALUE_HERE__"
     )
     app.run()
 

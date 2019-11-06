@@ -1,6 +1,7 @@
 # User
 .vscode
 config.yaml
+cookie
 
 # SCSS
 .sass-cache/
